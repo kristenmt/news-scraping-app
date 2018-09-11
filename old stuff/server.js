@@ -6,14 +6,31 @@ var mongojs = require("mongojs");
 var request = require("request");
 var cheerio = require("cheerio");
 var bodyParser = require("body-parser");
+var mongoose = require("mongoose");
 
 // Initialize Express
+var port = process.env.PORT || 3000;
 var app = express();
 
+// routing controllers
+var htmlRouter = require("./controllers/html-routes.js");
+var articleRouter = require("./controllers/article-routes.js");
 
 // Database configuration
 var databaseUrl = "scraper";
 var collections = ["scrapedData"];
+
+// use middleware
+ app.use(bodyParser.urlencoded({ extended: true}));
+ app.use(express.static("public"));
+
+ // handlbars
+ app.engine("handlebars", exphbs({ defaultLayout: "main"}));
+ app.set("veiw engine", "handlebars");
+
+ // routing
+app.use("/", htmlRouter);
+app.use("/", articleRouter);
 
 // Mongo database
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
@@ -22,21 +39,9 @@ var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines
 mongoose.Promise = Promise;
 mongoose.connect(MONGODB_URI);
 
-request("https://www.npr.org/sections/europe/", function(error, response, html) {
-    var $ = cheerio.load(html);
-    var results = [];
 
-    $("p.title").each(function(i, element) {
-        var title = $(element).text();
-        var link = $(element).children().attr("href");
-    results.push({
-        title: title,
-        link: link
-    })
-    })
-})
 
 // Listen on port 3000
-app.listen(3000, function() {
+app.listen(port, function() {
     console.log("App running on port 3000!");
   });
