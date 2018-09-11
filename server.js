@@ -27,7 +27,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 // Connect to the Mongo DB
-mongoose.connect("mongodb://localhost/europNews", { useNewUrlParser: true });
+mongoose.connect("mongodb://localhost/europeNews", { useNewUrlParser: true });
 
 // Routes
 
@@ -39,7 +39,7 @@ app.get("/scrape", function(req, res) {
     var $ = cheerio.load(response.data);
 
     // Now, we grab every h2 within an article tag, and do the following:
-    $("title").each(function(i, element) {
+    $("article h2").each(function(i, element) {
       // Save an empty result object
       var result = {};
 
@@ -118,14 +118,14 @@ app.post("/articles/:id", function(req, res) {
     });
 });
 
-app.get("/notes/:id", function(req, res){
-  db.Note.find({
-    article: req.params.id
-  })
-  .catch(function(err){
-    res.json(err);
-  });
-});
+// app.get("/notes/:id", function(req, res){
+//   db.Note.find({
+//     article: req.params.id
+//   })
+//   .catch(function(err){
+//     res.json(err);
+//   });
+// });
 
 
 
