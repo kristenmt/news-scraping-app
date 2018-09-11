@@ -27,7 +27,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 // Connect to the Mongo DB
-mongoose.connect("mongodb://localhost/europeNews", { useNewUrlParser: true });
+mongoose.connect("mongodb://localhost/europNews", { useNewUrlParser: true });
 
 // Routes
 
@@ -127,7 +127,9 @@ app.get("/notes/:id", function(req, res){
   });
 });
 
-// Start the server
-app.listen(PORT, function() {
-  console.log("App running on port " + PORT + "!");
-});
+
+
+// Listen on port 3000
+app.listen(port, function() {
+    console.log("App running on port 3000!");
+  });
