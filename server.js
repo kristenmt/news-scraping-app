@@ -130,6 +130,6 @@ app.get("/notes/:id", function(req, res){
 
 
 // Listen on port 3000
-app.listen(port, function() {
+app.listen(PORT, function() {
     console.log("App running on port 3000!");
   });
