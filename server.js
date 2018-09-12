@@ -27,8 +27,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 // Connect to the Mongo DB
+var databaseUri = 'mongodb://localhost/europeNews';
 mongoose.connect("mongodb://localhost/europeNews", { useNewUrlParser: true });
-
+if (process.env.MONGODB_URI) {
+  mongoose.connect(process.env.MONGODB_URI);
+} else {
+  mongoose.connect(databaseUri);
+}
 // Routes
 
 // A GET route for scraping the echoJS website
