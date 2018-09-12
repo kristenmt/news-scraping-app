@@ -4,6 +4,9 @@ $.getJSON("/articles", function(data) {
     for (var i = 0; i < data.length; i++) {
       // Display the apropos information on the page
       $("#articles").append("<p data-id='" + data[i]._id + "'>" + data[i].title + "<br />" + data[i].link + "</p>");
+      // A button to submit a new note, with the id of the article saved to it
+      $("#articles").append("<button data-id='" + data._id + "' id='savearticle'>Save Article</button>");
+  
     }
   });
   
@@ -41,7 +44,16 @@ $.getJSON("/articles", function(data) {
         }
       });
   });
-  
+  // When you click the save article button
+  $(document).on("click", "#savearticle", function(){
+      console.log("save article clicked");
+      var thisId = $(this).attr("data-id");
+      $.ajax({
+          method: "POST",
+          url: "/articles/" + thisId,
+      });
+      
+  });
   // When you click the savenote button
   $(document).on("click", "#savenote", function() {
     // Grab the id associated with the article from the submit button
